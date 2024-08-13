@@ -30,9 +30,9 @@ ext {
 dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation "org.springframework.boot:spring-boot-starter-web:${springVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa${springVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springVersion}"
     implementation "org.springframework.boot:spring-boot-starter-data-redis:${springVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-log4j2${springVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-log4j2:${springVersion}"
     developmentOnly "org.springframework.boot:spring-boot-devtools:${springVersion}"
 
     compileOnly 'org.projectlombok:lombok'
