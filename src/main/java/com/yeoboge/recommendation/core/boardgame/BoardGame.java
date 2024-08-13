@@ -16,6 +16,7 @@ public class BoardGame {
     private Long id;
     private String name;
     @Convert(converter = GenreConvertor.class)
+    @Column(name = "genre_code")
     private Genre genre;
 
     @OneToMany(mappedBy = "boardGame", cascade = CascadeType.ALL, orphanRemoval = true)
