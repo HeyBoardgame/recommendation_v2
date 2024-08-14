@@ -3,8 +3,10 @@ package com.yeoboge.recommendation.core.user;
 import com.yeoboge.recommendation.core.boardgame.Genre;
 import com.yeoboge.recommendation.core.common.GenreConvertor;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "favorite_genre")
 public class FavoriteGenre {
     @Id
@@ -15,5 +17,6 @@ public class FavoriteGenre {
     @JoinColumn(name = "user_id")
     private User user;
     @Convert(converter = GenreConvertor.class)
+    @Column(name = "genre_code")
     private Genre genreCode;
 }

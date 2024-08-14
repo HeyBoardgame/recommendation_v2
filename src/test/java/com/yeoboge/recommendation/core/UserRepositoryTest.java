@@ -11,6 +11,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
@@ -29,5 +31,19 @@ public class UserRepositoryTest {
 
         // then
         assert user.isPresent();
+    }
+
+    @Test
+    @DisplayName("사용자 선호 장르 Join 조회 테스트")
+    public void select_user_by_id_with_favorite_genre() {
+        // given
+        long userId = 1;
+
+        // when
+        User user = repository.findByIdWithFavoriteGenre(userId);
+
+        // then
+        assertNotNull(user);
+        assertEquals(4, user.getFavoriteGenres().size());
     }
 }
