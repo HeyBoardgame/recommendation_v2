@@ -39,6 +39,6 @@ public class AIRecommendService implements RecommendService {
         return boardGames.stream().map(BoardGameThumbnailDto::from).toList();
     }
 
-    private record Request(int user_id, int genre_id) {}
+    private record Request(long user_id, int genre_id) {}
     private record Response(List<Long> result) {}
 }
