@@ -3,10 +3,13 @@ package com.yeoboge.recommendation.core.user;
 import com.yeoboge.recommendation.core.boardgame.Genre;
 import com.yeoboge.recommendation.core.common.GenreConvertor;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "favorite_genre")
 public class FavoriteGenre {
     @Id

@@ -15,7 +15,7 @@ public class UserFavoriteGenreService {
     private final UserRepository repository;
 
     public List<FavoriteGenreIdDto> getUserFavoriteGenreWithIds(long userId) {
-        User user = repository.findByIdWithFavoriteGenre(userId).get();
+        User user = repository.findByIdWithFavoriteGenre(userId).orElseThrow();
         List<FavoriteGenre> favoriteGenres = user.getFavoriteGenres();
         return favoriteGenres.stream()
                 .map(o -> new FavoriteGenreIdDto(user.getId(), o.getGenreCode().getCode()))

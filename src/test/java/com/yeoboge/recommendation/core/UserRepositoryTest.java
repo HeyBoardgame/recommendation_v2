@@ -21,19 +21,6 @@ public class UserRepositoryTest {
     private UserRepository repository;
 
     @Test
-    @DisplayName("사용자 단일 조회 테스트")
-    public void select_user_by_id() {
-        // given
-        long userId = 1;
-
-        // when
-        Optional<User> user = repository.findById(userId);
-
-        // then
-        assert user.isPresent();
-    }
-
-    @Test
     @DisplayName("사용자 선호 장르 Join 조회 테스트")
     public void select_user_by_id_with_favorite_genre() {
         // given
@@ -45,5 +32,19 @@ public class UserRepositoryTest {
         // then
         assertTrue(user.isPresent());
         assertFalse(user.get().getFavoriteGenres().isEmpty());
+    }
+
+    @Test
+    @DisplayName("선호 장르가 없는 사용자 조회")
+    public void select_user_with_non_favorite_genre() {
+        // given
+        long userId = 4L;
+
+        // when
+        Optional<User> user = repository.findByIdWithFavoriteGenre(userId);
+
+        // then
+        assertTrue(user.isPresent());
+        assertTrue(user.get().getFavoriteGenres().isEmpty());
     }
 }
