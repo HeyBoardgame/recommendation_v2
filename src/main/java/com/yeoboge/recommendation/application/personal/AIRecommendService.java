@@ -35,7 +35,7 @@ public class AIRecommendService {
 
     private List<BoardGameThumbnailDto> mapThumbnailFromBoardGame(List<Long> ids) {
         List<BoardGame> boardGames = repository.findBoardGamesByIdIsIn(ids);
-        return boardGames.stream().map(BoardGameThumbnailDto::from).toList();
+        return BoardGameThumbnailDto.fromList(boardGames);
     }
 
     private record Request(long user_id, int genre_id) {}
