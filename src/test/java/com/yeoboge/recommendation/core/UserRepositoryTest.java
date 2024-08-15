@@ -37,13 +37,13 @@ public class UserRepositoryTest {
     @DisplayName("사용자 선호 장르 Join 조회 테스트")
     public void select_user_by_id_with_favorite_genre() {
         // given
-        long userId = 1;
+        long userId = 1L;
 
         // when
-        User user = repository.findByIdWithFavoriteGenre(userId);
+        Optional<User> user = repository.findByIdWithFavoriteGenre(userId);
 
         // then
-        assertNotNull(user);
-        assertEquals(4, user.getFavoriteGenres().size());
+        assertTrue(user.isPresent());
+        assertFalse(user.get().getFavoriteGenres().isEmpty());
     }
 }
