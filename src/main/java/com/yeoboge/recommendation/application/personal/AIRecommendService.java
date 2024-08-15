@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RecommendService
 @RequiredArgsConstructor
@@ -25,12 +27,15 @@ public class AIRecommendService {
 
     private List<Long> getRecommendedBoardGameIds(long userId, int genreId) {
         RestClient client = RestClientUtil.createClient(BASE_URL);
-        Response result = client.post()
+        Optional<Response> result = Optional.ofNullable(
+                client.post()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new Request(userId, genreId))
                 .retrieve()
-                .body(Response.class);
-        return result.result;
+                .body(Response.class)
+        );
+
+        return result.isPresent() ? result.get().result : Collections.emptyList();
     }
 
     private List<BoardGameThumbnailDto> mapThumbnailFromBoardGame(List<Long> ids) {
@@ -39,5 +44,5 @@ public class AIRecommendService {
     }
 
     private record Request(long user_id, int genre_id) {}
-    private record Response(List<Long> result) {}
+    private record Response(List<Long> result) { }
 }
