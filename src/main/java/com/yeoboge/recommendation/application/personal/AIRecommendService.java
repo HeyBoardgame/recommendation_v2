@@ -1,24 +1,23 @@
 package com.yeoboge.recommendation.application.personal;
 
+import com.yeoboge.recommendation.application.personal.annotation.RecommendService;
 import com.yeoboge.recommendation.core.boardgame.BoardGame;
 import com.yeoboge.recommendation.core.boardgame.BoardGameRepository;
 import com.yeoboge.recommendation.core.boardgame.dto.BoardGameThumbnailDto;
 import com.yeoboge.recommendation.infra.util.RestClientUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
-@Service
+@RecommendService
 @RequiredArgsConstructor
-public class AIRecommendService implements RecommendService {
+public class AIRecommendService {
     public static final String BASE_URL = "http://localhost:9090/recommends";
 
     private final BoardGameRepository repository;
 
-    @Override
     public List<BoardGameThumbnailDto> getRecommendedBoardGames(long userId, int genreId) {
         List<Long> recommendedIds = getRecommendedBoardGameIds(userId, genreId);
         return mapThumbnailFromBoardGame(recommendedIds);
