@@ -19,16 +19,16 @@ public class AIRecommendService implements RecommendService {
     private final BoardGameRepository repository;
 
     @Override
-    public List<BoardGameThumbnailDto> getRecommendedBoardGames() {
-        List<Long> recommendedIds = getRecommendedBoardGameIds();
+    public List<BoardGameThumbnailDto> getRecommendedBoardGames(long userId, int genreId) {
+        List<Long> recommendedIds = getRecommendedBoardGameIds(userId, genreId);
         return mapThumbnailFromBoardGame(recommendedIds);
     }
 
-    private List<Long> getRecommendedBoardGameIds() {
+    private List<Long> getRecommendedBoardGameIds(long userId, int genreId) {
         RestClient client = RestClientUtil.createClient(BASE_URL);
         Response result = client.post()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new Request(1, 1))
+                .body(new Request(userId, genreId))
                 .retrieve()
                 .body(Response.class);
         return result.result;
