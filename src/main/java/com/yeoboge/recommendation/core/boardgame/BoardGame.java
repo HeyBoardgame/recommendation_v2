@@ -3,12 +3,15 @@ package com.yeoboge.recommendation.core.boardgame;
 import com.yeoboge.recommendation.core.bookmark.Bookmark;
 import com.yeoboge.recommendation.core.common.GenreConvertor;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "board_game")
 public class BoardGame {
     @Id
