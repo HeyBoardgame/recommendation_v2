@@ -1,4 +1,4 @@
-package com.yeoboge.recommendation.infra.util;
+package com.yeoboge.recommendation.global.util;
 
 import org.springframework.web.client.RestClient;
 

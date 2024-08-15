@@ -4,7 +4,7 @@ import com.yeoboge.recommendation.application.personal.annotation.RecommendServi
 import com.yeoboge.recommendation.core.boardgame.BoardGame;
 import com.yeoboge.recommendation.core.boardgame.BoardGameRepository;
 import com.yeoboge.recommendation.core.boardgame.dto.BoardGameThumbnailDto;
-import com.yeoboge.recommendation.infra.util.RestClientUtil;
+import com.yeoboge.recommendation.global.util.RestClientUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
