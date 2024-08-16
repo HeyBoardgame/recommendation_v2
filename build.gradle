@@ -20,6 +20,8 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    querydsl.extendsFrom compileClasspath
 }
 
 repositories {
@@ -28,6 +30,7 @@ repositories {
 
 ext {
     springVersion = '3.3.2'
+    querydslVersion = '5.0.0'
 }
 
 dependencies {
@@ -38,6 +41,12 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-log4j2:${springVersion}"
     developmentOnly "org.springframework.boot:spring-boot-devtools:${springVersion}"
 
+    // QueryDsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -45,6 +54,25 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
+
+sourceSets {
+    main {
+        java {
+            srcDirs += [ querydslDir ]
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorPath = configurations.querydsl
+    options.generatedSourceOutputDirectory = file(querydslDir)
+}
+
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+clean {
+    delete file(querydslDir)
 }
