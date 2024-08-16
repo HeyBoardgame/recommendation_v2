@@ -1,7 +1,5 @@
-package com.yeoboge.recommendation.core;
+package com.yeoboge.recommendation.core.boardgame;
 
-import com.yeoboge.recommendation.core.boardgame.BoardGame;
-import com.yeoboge.recommendation.core.boardgame.BoardGameRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

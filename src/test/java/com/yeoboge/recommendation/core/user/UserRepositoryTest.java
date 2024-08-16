@@ -1,7 +1,5 @@
-package com.yeoboge.recommendation.core;
+package com.yeoboge.recommendation.core.user;
 
-import com.yeoboge.recommendation.core.user.User;
-import com.yeoboge.recommendation.core.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
