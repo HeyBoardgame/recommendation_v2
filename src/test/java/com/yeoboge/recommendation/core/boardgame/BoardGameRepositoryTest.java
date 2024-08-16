@@ -1,22 +1,22 @@
-package com.yeoboge.recommendation.core;
+package com.yeoboge.recommendation.core.boardgame;
 
-import com.yeoboge.recommendation.core.boardgame.BoardGame;
-import com.yeoboge.recommendation.core.boardgame.BoardGameRepository;
+import com.yeoboge.recommendation.infra.config.QueryDslTestConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@Import(QueryDslTestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 public class BoardGameRepositoryTest {
@@ -58,5 +58,20 @@ public class BoardGameRepositoryTest {
             if (e.getId().equals(a.getId())) count++;
         }
         assertEquals(count, expected.size());
+    }
+
+    @Test
+    @DisplayName("북마크 수 순으로 상위 10개 보드게임 조회")
+    public void select_most_bookmarked_board_games() {
+        List<BoardGame> actual = repository.findMostBookmarkedBoardGames();
+        assertEquals(BoardGameRepository.NUM_RECOMMENDED_BOARD_GAMES, actual.size());
+    }
+
+    @Test
+    @DisplayName("사용자가 최근 북마크한 보드게임 10개 조회")
+    public void select_user_book_marked_board_games() {
+        long userId = 1;
+        List<BoardGame> actual = repository.findUserBookmarkedBoardGames(userId);
+        assertEquals(BoardGameRepository.NUM_RECOMMENDED_BOARD_GAMES, actual.size());
     }
 }
