@@ -74,4 +74,12 @@ public class BoardGameRepositoryTest {
         List<BoardGame> actual = repository.findUserBookmarkedBoardGames(userId);
         assertEquals(BoardGameRepository.NUM_RECOMMENDED_BOARD_GAMES, actual.size());
     }
+
+    @Test
+    @DisplayName("사용자가 선호하는 장르 조회")
+    public void select_user_favorite_genres() {
+        long userId = 1;
+        List<Genre> genres = repository.findUserFavoriteGenre(userId);
+        assertFalse(genres.isEmpty());
+    }
 }
