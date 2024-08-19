@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(QueryDslTestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-public class BoardGameRepositoryTest {
+class BoardGameRepositoryTest {
     @Autowired
     private BoardGameRepository repository;
 
     @Test
     @DisplayName("Id 조건 없이 조회 시 조회되는 BoardGame 엔티티는 아무것도 없어야 함")
-    public void select_board_games_with_empty_ids() {
+    void select_board_games_with_empty_ids() {
         // given
         List<Long> ids = Collections.emptyList();
 
@@ -38,7 +38,7 @@ public class BoardGameRepositoryTest {
 
     @Test
     @DisplayName("Id로 여러 개의 보드게임 조회")
-    public void select_board_games_with_ids() {
+    void select_board_games_with_ids() {
         // given
         List<Long> ids = List.of(1L, 2L, 3L);
         List<BoardGame> expected = new ArrayList<>();
@@ -62,14 +62,14 @@ public class BoardGameRepositoryTest {
 
     @Test
     @DisplayName("북마크 수 순으로 상위 10개 보드게임 조회")
-    public void select_most_bookmarked_board_games() {
+    void select_most_bookmarked_board_games() {
         List<BoardGame> actual = repository.findMostBookmarkedBoardGames();
         assertEquals(BoardGameRepository.NUM_RECOMMENDED_BOARD_GAMES, actual.size());
     }
 
     @Test
     @DisplayName("사용자가 최근 북마크한 보드게임 10개 조회")
-    public void select_user_book_marked_board_games() {
+    void select_user_book_marked_board_games() {
         long userId = 1;
         List<BoardGame> actual = repository.findUserBookmarkedBoardGames(userId);
         assertEquals(BoardGameRepository.NUM_RECOMMENDED_BOARD_GAMES, actual.size());
@@ -77,7 +77,7 @@ public class BoardGameRepositoryTest {
 
     @Test
     @DisplayName("사용자가 선호하는 장르 조회")
-    public void select_user_favorite_genres() {
+    void select_user_favorite_genres() {
         long userId = 1;
         List<Genre> genres = repository.findUserFavoriteGenre(userId);
         assertFalse(genres.isEmpty());

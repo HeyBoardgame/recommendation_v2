@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class AIRecommendServiceTest {
+class AIRecommendServiceTest {
     @InjectMocks
     private AIRecommendService service;
 
@@ -32,7 +32,7 @@ public class AIRecommendServiceTest {
 
     @Test
     @DisplayName("추천 API 결과 기반으로 DTO 목록 생성")
-    public void get_thumbnail_list_from_api_response() {
+    void get_thumbnail_list_from_api_response() {
         // given
         List<BoardGame> fixtures = boardGameFixtures();
         List<BoardGameThumbnailDto> expected = BoardGameThumbnailDto.fromList(fixtures);
@@ -50,7 +50,7 @@ public class AIRecommendServiceTest {
 
     @Test
     @DisplayName("추천 API 결과 없을 때 EmptyList 반환")
-    public void get_empty_list_from_empty_response() {
+    void get_empty_list_from_empty_response() {
         // given
         List<BoardGame> fixtures = Collections.emptyList();
         List<BoardGameThumbnailDto> expected = Collections.emptyList();

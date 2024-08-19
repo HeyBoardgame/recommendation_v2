@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class BookmarkRecommendServiceTest {
+class BookmarkRecommendServiceTest {
     @InjectMocks
     private BookmarkRecommendService service;
 
@@ -27,7 +27,7 @@ public class BookmarkRecommendServiceTest {
     private BoardGameRepository repository;
 
     @Test
-    public void get_most_bookmarked_board_games() {
+    void get_most_bookmarked_board_games() {
         // given
         BoardGame boardGame = BoardGame.builder()
                 .name("board game")

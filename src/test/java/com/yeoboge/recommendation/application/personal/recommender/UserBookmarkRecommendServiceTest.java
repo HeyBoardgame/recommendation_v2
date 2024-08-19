@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class UserBookmarkRecommendServiceTest {
+class UserBookmarkRecommendServiceTest {
     @InjectMocks
     private UserBookmarkRecommendService service;
 

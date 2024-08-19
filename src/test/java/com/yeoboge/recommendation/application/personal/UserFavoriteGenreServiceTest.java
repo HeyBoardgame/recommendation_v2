@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class UserFavoriteGenreServiceTest {
+class UserFavoriteGenreServiceTest {
     @InjectMocks
     private UserFavoriteGenreService service;
 
@@ -28,7 +28,7 @@ public class UserFavoriteGenreServiceTest {
 
     @Test
     @DisplayName("사용자 선호 장르 DTO 목록 조회")
-    public void get_user_favorite_genres() {
+    void get_user_favorite_genres() {
         // given
         long userId = 1;
         Genre favoriteGenre = Genre.ABSTRACT;
@@ -44,7 +44,7 @@ public class UserFavoriteGenreServiceTest {
 
     @Test
     @DisplayName("선호 장르 없는 사용자의 DTO 목록 조회")
-    public void get_empty_user_favorite_genre() {
+    void get_empty_user_favorite_genre() {
         // given
         long userId = 1;
 
