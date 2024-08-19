@@ -9,10 +9,12 @@ import java.util.List;
 
 import static com.yeoboge.recommendation.core.boardgame.QBoardGame.boardGame;
 import static com.yeoboge.recommendation.core.bookmark.QBookmark.bookmark;
+import static com.yeoboge.recommendation.core.user.QFavoriteGenre.favoriteGenre;
 
 @Repository
 @RequiredArgsConstructor
 public class BoardGameCustomRepositoryImpl implements BoardGameCustomRepository {
+    public static final int NUM_FAVORITE_GENRE = 3;
     private final JPAQueryFactory queryFactory;
 
     @Override
@@ -39,5 +41,18 @@ public class BoardGameCustomRepositoryImpl implements BoardGameCustomRepository 
                 .limit(NUM_RECOMMENDED_BOARD_GAMES)
                 .fetch();
         return result.size() == NUM_RECOMMENDED_BOARD_GAMES ? result : Collections.emptyList();
+    }
+
+    @Override
+    public List<Genre> findUserFavoriteGenre(long userId) {
+        return queryFactory.select(boardGame.genre)
+                .from(boardGame)
+                .join(favoriteGenre)
+                .on(boardGame.genre.eq(favoriteGenre.genreCode))
+                .where(favoriteGenre.user.id.eq(userId))
+                .groupBy(boardGame.genre)
+                .orderBy(boardGame.id.count().desc())
+                .limit(NUM_FAVORITE_GENRE)
+                .fetch();
     }
 }

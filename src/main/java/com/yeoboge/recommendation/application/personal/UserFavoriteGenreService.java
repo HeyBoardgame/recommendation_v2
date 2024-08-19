@@ -1,9 +1,7 @@
 package com.yeoboge.recommendation.application.personal;
 
-import com.yeoboge.recommendation.core.user.FavoriteGenre;
-import com.yeoboge.recommendation.core.user.User;
-import com.yeoboge.recommendation.core.user.UserRepository;
-import com.yeoboge.recommendation.core.user.dto.FavoriteGenreIdDto;
+import com.yeoboge.recommendation.core.boardgame.BoardGameRepository;
+import com.yeoboge.recommendation.core.boardgame.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +10,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserFavoriteGenreService {
-    private final UserRepository repository;
+    private final BoardGameRepository repository;
 
-    public List<FavoriteGenreIdDto> getUserFavoriteGenreWithIds(long userId) {
-        User user = repository.findByIdWithFavoriteGenre(userId).orElseThrow();
-        List<FavoriteGenre> favoriteGenres = user.getFavoriteGenres();
-        return favoriteGenres.stream()
-                .map(o -> new FavoriteGenreIdDto(user.getId(), o.getGenreCode().getCode()))
-                .toList();
+    public List<Genre> getUserFavoriteGenreWithIds(long userId) {
+        return repository.findUserFavoriteGenre(userId);
     }
 }

@@ -1,5 +1,6 @@
-package com.yeoboge.recommendation.application.personal;
+package com.yeoboge.recommendation.application.personal.recommender;
 
+import com.yeoboge.recommendation.application.personal.dto.RecommendationContextDto;
 import com.yeoboge.recommendation.core.boardgame.BoardGame;
 import com.yeoboge.recommendation.core.boardgame.BoardGameRepository;
 import com.yeoboge.recommendation.core.boardgame.Genre;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
-@Profile("test")
 @ExtendWith(MockitoExtension.class)
-public class AIRecommendServiceTest {
+@ActiveProfiles("test")
+class AIRecommendServiceTest {
     @InjectMocks
     private AIRecommendService service;
 
@@ -31,7 +32,7 @@ public class AIRecommendServiceTest {
 
     @Test
     @DisplayName("추천 API 결과 기반으로 DTO 목록 생성")
-    public void get_thumbnail_list_from_api_response() {
+    void get_thumbnail_list_from_api_response() {
         // given
         List<BoardGame> fixtures = boardGameFixtures();
         List<BoardGameThumbnailDto> expected = BoardGameThumbnailDto.fromList(fixtures);
@@ -42,13 +43,14 @@ public class AIRecommendServiceTest {
         when(repository.findBoardGamesByIdIsIn(anyList())).thenReturn(fixtures);
 
         // then
-        List<BoardGameThumbnailDto> actual = service.getRecommendedBoardGames(userId, genreId);
+        RecommendationContextDto context = new RecommendationContextDto(userId, genreId);
+        List<BoardGameThumbnailDto> actual = service.getRecommendations(context);
         assertEquals(expected, actual);
     }
 
     @Test
     @DisplayName("추천 API 결과 없을 때 EmptyList 반환")
-    public void get_empty_list_from_empty_response() {
+    void get_empty_list_from_empty_response() {
         // given
         List<BoardGame> fixtures = Collections.emptyList();
         List<BoardGameThumbnailDto> expected = Collections.emptyList();
@@ -59,7 +61,8 @@ public class AIRecommendServiceTest {
         when(repository.findBoardGamesByIdIsIn(anyList())).thenReturn(fixtures);
 
         // then
-        List<BoardGameThumbnailDto> actual = service.getRecommendedBoardGames(userId, genreId);
+        RecommendationContextDto context = new RecommendationContextDto(userId, genreId);
+        List<BoardGameThumbnailDto> actual = service.getRecommendations(context);
         assertEquals(expected, actual);
     }
 

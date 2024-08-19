@@ -1,8 +1,10 @@
-package com.yeoboge.recommendation.application.personal;
+package com.yeoboge.recommendation.application.personal.recommender;
 
-import com.yeoboge.recommendation.application.personal.annotation.RecommendService;
+import com.yeoboge.recommendation.application.personal.annotation.Recommender;
+import com.yeoboge.recommendation.application.personal.dto.RecommendationContextDto;
 import com.yeoboge.recommendation.core.boardgame.BoardGame;
 import com.yeoboge.recommendation.core.boardgame.BoardGameRepository;
+import com.yeoboge.recommendation.core.boardgame.Genre;
 import com.yeoboge.recommendation.core.boardgame.dto.BoardGameThumbnailDto;
 import com.yeoboge.recommendation.global.util.RestClientUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,15 +15,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@RecommendService
+@Recommender
 @RequiredArgsConstructor
-public class AIRecommendService {
+public class AIRecommendService implements RecommendService {
     public static final String BASE_URL = "http://localhost:9090/recommends";
+    public static final String CATEGORY_PREFIX = "내가 좋아하는 ";
+    public static final String CATEGORY_SUFFIX = " 보드게임 🎲";
 
     private final BoardGameRepository repository;
 
-    public List<BoardGameThumbnailDto> getRecommendedBoardGames(long userId, int genreId) {
-        List<Long> recommendedIds = getRecommendedBoardGameIds(userId, genreId);
+    @Override
+    public String getCategory(RecommendationContextDto context) {
+        String genre = Genre.ofCode(context.genreId()).getName();
+        return CATEGORY_PREFIX + genre + CATEGORY_SUFFIX;
+    }
+
+    @Override
+    public List<BoardGameThumbnailDto> getRecommendations(RecommendationContextDto context) {
+        List<Long> recommendedIds = getRecommendedBoardGameIds(context.userId(), context.genreId());
         return mapThumbnailFromBoardGame(recommendedIds);
     }
 
@@ -29,10 +40,10 @@ public class AIRecommendService {
         RestClient client = RestClientUtil.createClient(BASE_URL);
         Optional<Response> result = Optional.ofNullable(
                 client.post()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(new Request(userId, genreId))
-                .retrieve()
-                .body(Response.class)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(new Request(userId, genreId))
+                        .retrieve()
+                        .body(Response.class)
         );
 
         return result.isPresent() ? result.get().result : Collections.emptyList();

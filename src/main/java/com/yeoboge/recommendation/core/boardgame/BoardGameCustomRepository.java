@@ -8,4 +8,6 @@ public interface BoardGameCustomRepository {
     List<BoardGame> findMostBookmarkedBoardGames();
 
     List<BoardGame> findUserBookmarkedBoardGames(long userId);
+
+    List<Genre> findUserFavoriteGenre(long userId);
 }
