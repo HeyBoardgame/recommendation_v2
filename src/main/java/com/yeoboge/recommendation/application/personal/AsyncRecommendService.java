@@ -1,6 +1,10 @@
 package com.yeoboge.recommendation.application.personal;
 
 import com.yeoboge.recommendation.application.personal.annotation.Recommender;
+import com.yeoboge.recommendation.application.personal.dto.PersonalRecommendationDto;
+import com.yeoboge.recommendation.application.personal.dto.RecommendationContextDto;
+import com.yeoboge.recommendation.application.personal.recommender.AIRecommendService;
+import com.yeoboge.recommendation.application.personal.recommender.RecommendService;
 import com.yeoboge.recommendation.core.boardgame.Genre;
 import com.yeoboge.recommendation.core.boardgame.dto.BoardGameThumbnailDto;
 import jakarta.annotation.PreDestroy;
@@ -19,8 +23,8 @@ public class AsyncRecommendService {
     private final List<RecommendService> recommenders;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public PersonalRecommendation getAsyncPersonalRecommendation(long userId, List<Genre> favoriteGenres) {
-        PersonalRecommendation recommendation = new PersonalRecommendation(new ConcurrentHashMap<>());
+    public PersonalRecommendationDto getAsyncPersonalRecommendation(long userId, List<Genre> favoriteGenres) {
+        PersonalRecommendationDto recommendation = new PersonalRecommendationDto(new ConcurrentHashMap<>());
         List<CompletableFuture<Void>> futures = recommenders.stream()
                 .flatMap(service -> {
                     if (service instanceof AIRecommendService) {
@@ -35,20 +39,20 @@ public class AsyncRecommendService {
     }
 
     private List<CompletableFuture<Void>> processAIRecommendation(
-            RecommendService service, PersonalRecommendation recommendation, List<Genre> favoriteGenres, long userId
+            RecommendService service, PersonalRecommendationDto recommendation, List<Genre> favoriteGenres, long userId
     ) {
         return favoriteGenres.stream().map(fg -> {
-            RecommendationContext context = new RecommendationContext(userId, fg.getCode());
+            RecommendationContextDto context = new RecommendationContextDto(userId, fg.getCode());
             return CompletableFuture.supplyAsync(() -> service.getRecommendations(context), executorService)
                     .thenAccept(recommended -> recommendation.boardGames().put(service.getCategory(context), recommended));
         }).toList();
     }
 
     private CompletableFuture<Void> processNonAIRecommendation(
-            RecommendService service, PersonalRecommendation recommendation, long userId
+            RecommendService service, PersonalRecommendationDto recommendation, long userId
     ) {
         return CompletableFuture.runAsync(() -> {
-            RecommendationContext context = new RecommendationContext(userId, null);
+            RecommendationContextDto context = new RecommendationContextDto(userId, null);
             List<BoardGameThumbnailDto> recommended = service.getRecommendations(context);
             recommendation.boardGames().put(service.getCategory(context), recommended);
         }, executorService);

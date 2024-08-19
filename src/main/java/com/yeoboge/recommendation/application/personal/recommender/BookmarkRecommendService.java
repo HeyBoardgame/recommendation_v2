@@ -1,6 +1,7 @@
-package com.yeoboge.recommendation.application.personal;
+package com.yeoboge.recommendation.application.personal.recommender;
 
 import com.yeoboge.recommendation.application.personal.annotation.Recommender;
+import com.yeoboge.recommendation.application.personal.dto.RecommendationContextDto;
 import com.yeoboge.recommendation.core.boardgame.BoardGame;
 import com.yeoboge.recommendation.core.boardgame.BoardGameRepository;
 import com.yeoboge.recommendation.core.boardgame.dto.BoardGameThumbnailDto;
@@ -15,12 +16,12 @@ public class BookmarkRecommendService implements RecommendService {
     private final BoardGameRepository repository;
 
     @Override
-    public String getCategory(RecommendationContext context) {
+    public String getCategory(RecommendationContextDto context) {
         return CATEGORY;
     }
 
     @Override
-    public List<BoardGameThumbnailDto> getRecommendations(RecommendationContext context) {
+    public List<BoardGameThumbnailDto> getRecommendations(RecommendationContextDto context) {
         List<BoardGame> boardGames = repository.findMostBookmarkedBoardGames();
         return BoardGameThumbnailDto.fromList(boardGames);
     }
