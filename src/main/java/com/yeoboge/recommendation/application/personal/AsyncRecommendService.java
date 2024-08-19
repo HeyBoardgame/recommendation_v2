@@ -44,7 +44,10 @@ public class AsyncRecommendService {
         return favoriteGenres.stream().map(fg -> {
             RecommendationContextDto context = new RecommendationContextDto(userId, fg.getCode());
             return CompletableFuture.supplyAsync(() -> service.getRecommendations(context), executorService)
-                    .thenAccept(recommended -> recommendation.boardGames().put(service.getCategory(context), recommended));
+                    .thenAccept(recommended -> {
+                        if (recommended.isEmpty()) return;
+                        recommendation.boardGames().put(service.getCategory(context), recommended);
+                    });
         }).toList();
     }
 
@@ -54,6 +57,7 @@ public class AsyncRecommendService {
         return CompletableFuture.runAsync(() -> {
             RecommendationContextDto context = new RecommendationContextDto(userId, null);
             List<BoardGameThumbnailDto> recommended = service.getRecommendations(context);
+            if (recommended.isEmpty()) return;
             recommendation.boardGames().put(service.getCategory(context), recommended);
         }, executorService);
     }
