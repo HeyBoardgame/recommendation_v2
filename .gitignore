@@ -40,7 +40,3 @@ out/
 ### VS Code ###
 .vscode/
 
-
-### Spring Boot ###
-/src/main/resources/application.properties
-/src/test/resources/application-test.properties
