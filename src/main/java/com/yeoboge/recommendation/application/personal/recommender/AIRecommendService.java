@@ -8,6 +8,7 @@ import com.yeoboge.recommendation.core.boardgame.Genre;
 import com.yeoboge.recommendation.core.boardgame.dto.BoardGameThumbnailDto;
 import com.yeoboge.recommendation.global.util.RestClientUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
@@ -18,11 +19,12 @@ import java.util.Optional;
 @Recommender
 @RequiredArgsConstructor
 public class AIRecommendService implements RecommendService {
-    public static final String BASE_URL = "http://localhost:9090/recommends";
     public static final String CATEGORY_PREFIX = "내가 좋아하는 ";
     public static final String CATEGORY_SUFFIX = " 보드게임 🎲";
 
     private final BoardGameRepository repository;
+    @Value("${api.base.url}")
+    private String baseUrl;
 
     @Override
     public String getCategory(RecommendationContextDto context) {
@@ -37,7 +39,7 @@ public class AIRecommendService implements RecommendService {
     }
 
     private List<Long> getRecommendedBoardGameIds(long userId, int genreId) {
-        RestClient client = RestClientUtil.createClient(BASE_URL);
+        RestClient client = RestClientUtil.createClient(baseUrl);
         Optional<Response> result = Optional.ofNullable(
                 client.post()
                         .contentType(MediaType.APPLICATION_JSON)
