@@ -1,0 +1,33 @@
+networks:
+  yeoboge:
+    driver: bridge
+
+services:
+  server:
+    image: server
+    restart: always
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - API_BASE_URL=${API_BASE_URL}
+    networks:
+      - yeoboge
+
+  recommend:
+    image: recommender
+    restart: always
+    container_name: recommender
+    build:
+      context: ./recommender
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    networks:
+      - yeoboge
